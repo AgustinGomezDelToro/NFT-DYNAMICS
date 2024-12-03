@@ -6,14 +6,15 @@ import "../src/WeatherNFT.sol";
 
 contract DeployWeatherNFT is Script {
     function run() external {
-        uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY"); // Lee la clave privada
-        vm.startBroadcast(deployerPrivateKey); // Inicia la transmisión de transacciones
+        uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+        address ownerAddress = vm.envAddress("OWNER_ADDRESS");
 
-        // Despliega el contrato
-        WeatherNFT weatherNFT = new WeatherNFT();
+        vm.startBroadcast(deployerPrivateKey);
+
+        WeatherNFT weatherNFT = new WeatherNFT(ownerAddress);
 
         console.log("WeatherNFT deployed at:", address(weatherNFT));
 
-        vm.stopBroadcast(); // Finaliza la transmisión
+        vm.stopBroadcast();
     }
 }
