@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { mintWeatherNFT } from "@/lib/contract";
-import { isAddress } from "ethers"; // Importar isAddress directamente
+import { isAddress } from "ethers";
 
 export default function MintNFTForm() {
     const [formData, setFormData] = useState({
@@ -22,33 +22,33 @@ export default function MintNFTForm() {
             ...formData,
             [name]: name === "humidity" || name === "windSpeed" ? parseInt(value) : value,
         });
-        setError(null); // Limpiar errores al cambiar
+        setError(null); // Clear errors when changing inputs
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Validaciones
-        if (!formData.to || !isAddress(formData.to)) { // Usa isAddress directamente
-            setError("La dirección proporcionada no es válida.");
+        // Validations
+        if (!formData.to || !isAddress(formData.to)) { // Use isAddress directly
+            setError("The provided address is invalid.");
             return;
         }
 
         if (!formData.image || !formData.image.startsWith("http")) {
-            setError("La URL de la imagen debe ser válida (debe comenzar con 'http').");
+            setError("The image URL must be valid (must start with 'http').");
             return;
         }
 
         try {
             if (!window.ethereum) {
-                alert("MetaMask no está instalado.");
+                alert("MetaMask is not installed.");
                 return;
             }
 
-            // Solicita la conexión a MetaMask
+            // Request MetaMask connection
             await window.ethereum.request({ method: "eth_requestAccounts" });
 
-            // Llama a la función de minteo
+            // Call the minting function
             await mintWeatherNFT(
                 formData.to,
                 formData.name,
@@ -58,8 +58,8 @@ export default function MintNFTForm() {
                 formData.windSpeed
             );
 
-            alert("NFT minteado con éxito!");
-            console.log("Datos del formulario:", formData);
+            alert("NFT minted successfully!");
+            console.log("Form data:", formData);
             setFormData({
                 to: "",
                 name: "",
@@ -69,18 +69,18 @@ export default function MintNFTForm() {
                 windSpeed: 0,
             });
         } catch (error) {
-            console.error("Error al mintear el NFT:", error);
-            setError("Hubo un error al mintear el NFT. Revisa la consola para más detalles.");
+            console.error("Error minting the NFT:", error);
+            setError("An error occurred while minting the NFT. Check the console for more details.");
         }
     };
 
     return (
         <div className="p-4">
-            <h1 className="text-2xl font-bold mb-4">Mintear un NFT del Clima</h1>
+            <h1 className="text-2xl font-bold mb-4">Mint a Weather NFT</h1>
             {error && <p className="text-red-500 mb-4">{error}</p>}
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                    <label className="block font-medium">Dirección del receptor:</label>
+                    <label className="block font-medium">Recipient Address:</label>
                     <input
                         type="text"
                         name="to"
@@ -91,7 +91,7 @@ export default function MintNFTForm() {
                     />
                 </div>
                 <div>
-                    <label className="block font-medium">Nombre:</label>
+                    <label className="block font-medium">Name:</label>
                     <input
                         type="text"
                         name="name"
@@ -102,7 +102,7 @@ export default function MintNFTForm() {
                     />
                 </div>
                 <div>
-                    <label className="block font-medium">Descripción:</label>
+                    <label className="block font-medium">Description:</label>
                     <textarea
                         name="description"
                         value={formData.description}
@@ -112,7 +112,7 @@ export default function MintNFTForm() {
                     />
                 </div>
                 <div>
-                    <label className="block font-medium">URL de la imagen:</label>
+                    <label className="block font-medium">Image URL:</label>
                     <input
                         type="text"
                         name="image"
@@ -123,7 +123,7 @@ export default function MintNFTForm() {
                     />
                 </div>
                 <div>
-                    <label className="block font-medium">Humedad:</label>
+                    <label className="block font-medium">Humidity:</label>
                     <input
                         type="number"
                         name="humidity"
@@ -134,7 +134,7 @@ export default function MintNFTForm() {
                     />
                 </div>
                 <div>
-                    <label className="block font-medium">Velocidad del viento:</label>
+                    <label className="block font-medium">Wind Speed:</label>
                     <input
                         type="number"
                         name="windSpeed"
@@ -148,7 +148,7 @@ export default function MintNFTForm() {
                     type="submit"
                     className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                 >
-                    Mintear NFT
+                    Mint NFT
                 </button>
             </form>
         </div>
