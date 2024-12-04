@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { mintWeatherNFT } from "@/lib/contract";
+import { mintWeatherNFT } from "@/lib/contract"; // Asegúrate de que esta función esté bien importada
 import { isAddress } from "ethers";
 
 export default function MintNFTForm() {
@@ -28,8 +28,7 @@ export default function MintNFTForm() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Validations
-        if (!formData.to || !isAddress(formData.to)) { // Use isAddress directly
+        if (!formData.to || !isAddress(formData.to)) {
             setError("The provided address is invalid.");
             return;
         }
@@ -45,7 +44,6 @@ export default function MintNFTForm() {
                 return;
             }
 
-            // Request MetaMask connection
             await window.ethereum.request({ method: "eth_requestAccounts" });
 
             // Call the minting function
@@ -59,7 +57,6 @@ export default function MintNFTForm() {
             );
 
             alert("NFT minted successfully!");
-            console.log("Form data:", formData);
             setFormData({
                 to: "",
                 name: "",

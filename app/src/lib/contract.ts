@@ -1,34 +1,67 @@
 import { ethers } from "ethers";
-import WeatherNFT from "@/abis/WeatherNFT.json"; // Importa el JSON completo
+import WeatherNFT from "@/abis/WeatherNFT.json"; // ABI del contrato
+import { NFT } from "@/types/NFT"; // Interfaz para los NFTs
 
-// Extrae la ABI desde el archivo JSON
+// ABI y dirección del contrato
 const WeatherNFTAbi = WeatherNFT.abi;
-
 const contractAddress = "0x61F461Ab541bC06a3123dd4d0112F9fFCedb9f00";
 const AVALANCHE_RPC_URL = "https://avalanche-fuji.infura.io/v3/9eb78f13dc39478f8dc68f8ac3a571da";
 
-// Crea el proveedor
-export const getProvider = () => {
-    try {
-        return new ethers.JsonRpcProvider(AVALANCHE_RPC_URL);
-    } catch (error) {
-        console.error("Error al crear el proveedor:", error);
-        throw error;
-    }
-};
+// Proveedor para leer desde la blockchain
+export const getProvider = () => new ethers.JsonRpcProvider(AVALANCHE_RPC_URL);
 
-// Crea una instancia del contrato
+// Contrato conectado con firma para escribir (mintear NFTs)
 export const getContract = async () => {
     if (!window.ethereum) {
-        alert("MetaMask no está instalado.");
-        throw new Error("MetaMask no está instalado");
+        throw new Error("MetaMask is not installed.");
     }
-    await window.ethereum.request({ method: "eth_requestAccounts" });
-
-    const provider = new ethers.BrowserProvider(window.ethereum);
+    const provider = new ethers.BrowserProvider(window.ethereum as any);
     const signer = await provider.getSigner();
-
     return new ethers.Contract(contractAddress, WeatherNFTAbi, signer);
+};
+
+// Función para recuperar los NFTs minteados
+export const getMintedNFTs = async (): Promise<NFT[]> => {
+    try {
+        const provider = getProvider();
+        const contract = new ethers.Contract(contractAddress, WeatherNFTAbi, provider);
+
+        const tokenCounter = await contract.tokenCounter();
+        // Asegúrate de manejar cualquier tipo de retorno (BigInt, string, number)
+        const totalTokens = typeof tokenCounter === "bigint"
+            ? Number(tokenCounter) - 1
+            : typeof tokenCounter === "number"
+                ? tokenCounter - 1
+                : parseInt(tokenCounter) - 1;
+
+        if (totalTokens <= 0) {
+            return [];
+        }
+
+        const nfts = await Promise.all(
+            Array.from({ length: totalTokens }, (_, i) => i + 1).map(async (tokenId) => {
+                try {
+                    const nftData = await contract.getWeatherData(tokenId);
+                    return {
+                        tokenId,
+                        name: nftData[0],
+                        description: nftData[1],
+                        image: nftData[2] || "https://via.placeholder.com/150",
+                        humidity: Number(nftData[3]),
+                        windSpeed: Number(nftData[4]),
+                    };
+                } catch (err) {
+                    console.error(`Error fetching NFT with ID: ${tokenId}`, err);
+                    return null;
+                }
+            })
+        );
+
+        return nfts.filter(Boolean) as NFT[];
+    } catch (error) {
+        console.error("Error fetching minted NFTs:", error);
+        throw new Error("Failed to fetch NFTs.");
+    }
 };
 
 // Función para mintear un NFT
