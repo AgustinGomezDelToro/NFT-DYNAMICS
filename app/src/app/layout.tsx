@@ -32,7 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       const randomWeather =
           weatherOptions[Math.floor(Math.random() * weatherOptions.length)];
       setCurrentWeather(randomWeather);
-    }, 20000);
+    }, 200);
 
     return () => clearInterval(interval);
   }, []);
@@ -57,7 +57,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {renderBackground()}
         <div className="relative z-10 p-4">
           <div className="flex justify-between items-center mb-4">
-            <h1 className="text-2xl font-bold">Weather NFTs</h1>
+            <h1 className="text-2xl font-bold"></h1>
             <ConnectKitButton />
           </div>
           {children}
