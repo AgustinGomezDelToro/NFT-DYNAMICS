@@ -83,3 +83,23 @@ export const mintWeatherNFT = async (
         throw error;
     }
 };
+
+// Función para actualizar un NFT
+export const updateWeatherNFT = async (
+    tokenId: number,
+    name: string,
+    description: string,
+    image: string,
+    humidity: number,
+    windSpeed: number
+) => {
+    try {
+        const contract = await getContract();
+        const tx = await contract.updateWeatherData(tokenId, name, description, image, humidity, windSpeed);
+        await tx.wait();
+        console.log(`NFT ${tokenId} updated successfully: ${tx.hash}`);
+    } catch (error) {
+        console.error("Error updating the NFT:", error);
+        throw error;
+    }
+};

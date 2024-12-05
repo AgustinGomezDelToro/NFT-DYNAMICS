@@ -14,7 +14,7 @@ export default function WeatherPage() {
         const fetchNFTs = async () => {
             try {
                 const data = await getMintedNFTs(); // Cambia esta línea si necesitas ajustar tu API
-                setNfts(data.slice(0, 3)); // Limita la cantidad de NFTs a 3
+                setNfts(data.slice(0, 10)); // Limita la cantidad de NFTs a 3
             } catch (error) {
                 setError("Failed to fetch NFTs. Please try again later.");
                 console.error("Error fetching NFTs:", error);
