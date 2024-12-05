@@ -1,10 +1,10 @@
 import { ethers } from "ethers";
-import WeatherNFT from "@/abis/WeatherNFT.json"; // ABI del contrato
-import { NFT } from "@/types/NFT"; // Interfaz para los NFTs
+import WeatherNFT from "@/abis/WeatherNFT.json";
+import { NFT } from "@/types/NFT";
 
 // ABI y dirección del contrato
 const WeatherNFTAbi = WeatherNFT.abi;
-const contractAddress = "0xAD28F300ea0E8e531ecf1967d2C64bd588724A57";
+const contractAddress = "0x96906c7809eEC3C31307e15e233a7678853ecF0c";
 const AVALANCHE_RPC_URL = "https://avalanche-fuji.infura.io/v3/9eb78f13dc39478f8dc68f8ac3a571da";
 
 // Proveedor para leer desde la blockchain
