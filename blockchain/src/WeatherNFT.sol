@@ -45,6 +45,24 @@ contract WeatherNFT is ERC721URIStorage, Ownable {
         tokenCounter++; // Incrementa manualmente el contador del token
     }
 
+    function updateWeatherData(
+        uint256 tokenId,
+        string memory name,
+        string memory description,
+        string memory image,
+        uint256 humidity,
+        uint256 windSpeed
+    ) public onlyOwner {
+        require(ownerOf(tokenId) != address(0), "Token does not exist");
+
+        // Actualizar los datos
+        weatherData[tokenId] = WeatherData(name, description, image, humidity, windSpeed);
+
+        // Regenerar la URI del token
+        string memory uri = generateTokenURI(name, description, image, humidity, windSpeed);
+        _setTokenURI(tokenId, uri);
+    }
+
     function getWeatherData(uint256 tokenId)
     public
     view
