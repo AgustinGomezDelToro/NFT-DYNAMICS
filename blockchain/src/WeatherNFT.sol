@@ -8,18 +8,18 @@ contract WeatherNFT is ERC721URIStorage, Ownable {
     uint256 public tokenCounter;
 
     struct WeatherData {
-        string name;         // Ciudad
-        string description;  // Clima (soleado, nublado, lluvioso)
-        string image;        // URL de la imagen
-        uint256 humidity;    // Humedad
-        uint256 windSpeed;   // Velocidad del viento
+        string name;
+        string description;
+        string image;
+        uint256 humidity;
+        uint256 windSpeed;
     }
 
     mapping(uint256 => WeatherData) public weatherData;
 
     constructor(address initialOwner) ERC721("WeatherNFT", "WNFT") Ownable(initialOwner) {
-        transferOwnership(initialOwner); // Asigna el propietario inicial
-        tokenCounter = 1; // Inicia el contador en 1
+        transferOwnership(initialOwner); // Assign initial owner
+        tokenCounter = 1; // Start the token counter at 1
     }
 
     function mintWeatherNFT(
@@ -32,17 +32,17 @@ contract WeatherNFT is ERC721URIStorage, Ownable {
     ) public onlyOwner {
         uint256 newTokenId = tokenCounter;
 
-        // Mint el NFT
+        // Mint the NFT
         _safeMint(to, newTokenId);
 
-        // Almacena los metadatos del clima
+        // Store the weather metadata
         weatherData[newTokenId] = WeatherData(name, description, image, humidity, windSpeed);
 
-        // Genera dinámicamente la URI del token
+        // Dynamically generate the token URI
         string memory uri = generateTokenURI(name, description, image, humidity, windSpeed);
         _setTokenURI(newTokenId, uri);
 
-        tokenCounter++; // Incrementa manualmente el contador del token
+        tokenCounter++; // Increment the token counter
     }
 
     function updateWeatherData(
@@ -52,13 +52,13 @@ contract WeatherNFT is ERC721URIStorage, Ownable {
         string memory image,
         uint256 humidity,
         uint256 windSpeed
-    ) public onlyOwner {
+    ) public {
         require(ownerOf(tokenId) != address(0), "Token does not exist");
 
-        // Actualizar los datos
+        // Update the weather metadata
         weatherData[tokenId] = WeatherData(name, description, image, humidity, windSpeed);
 
-        // Regenerar la URI del token
+        // Regenerate the token URI
         string memory uri = generateTokenURI(name, description, image, humidity, windSpeed);
         _setTokenURI(tokenId, uri);
     }
@@ -85,7 +85,7 @@ contract WeatherNFT is ERC721URIStorage, Ownable {
         string memory image,
         uint256 humidity,
         uint256 windSpeed
-    ) public pure returns (string memory) { // pasar a internar post TEST
+    ) public pure returns (string memory) {
         return
             string(
             abi.encodePacked(
@@ -97,7 +97,6 @@ contract WeatherNFT is ERC721URIStorage, Ownable {
             )
         );
     }
-
 
     function uint2str(uint256 _i) internal pure returns (string memory _uintAsString) {
         if (_i == 0) {
@@ -119,10 +118,5 @@ contract WeatherNFT is ERC721URIStorage, Ownable {
             _i /= 10;
         }
         return string(bstr);
-    }
-
-    // Función opcional para devolver una URI base
-    function _baseURI() internal view virtual override returns (string memory) {
-        return "https://example-base-uri.com/";
     }
 }

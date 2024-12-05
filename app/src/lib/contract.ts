@@ -4,7 +4,7 @@ import { NFT } from "@/types/NFT";
 
 // ABI y dirección del contrato
 const WeatherNFTAbi = WeatherNFT.abi;
-const contractAddress = "0x96906c7809eEC3C31307e15e233a7678853ecF0c";
+const contractAddress = "0xE62ae127015A59b02Fb609575D12d17Be3E57e5F";
 const AVALANCHE_RPC_URL = "https://avalanche-fuji.infura.io/v3/9eb78f13dc39478f8dc68f8ac3a571da";
 
 // Proveedor para leer desde la blockchain
