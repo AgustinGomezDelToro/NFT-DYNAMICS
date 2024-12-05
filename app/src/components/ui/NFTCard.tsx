@@ -10,7 +10,7 @@ interface NFTCardProps {
 
 export function NFTCard({ nft, onUpdate }: NFTCardProps) {
     return (
-        <div className="border rounded-lg shadow-lg p-4">
+        <div className="bg-white border rounded-lg shadow-lg p-4">
             <img
                 src={nft.image || "https://via.placeholder.com/150"}
                 alt={nft.name}

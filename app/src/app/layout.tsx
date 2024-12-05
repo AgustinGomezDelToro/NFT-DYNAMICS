@@ -65,9 +65,29 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {renderBackground()}
         <div className="relative z-10 p-4">
           <div className="flex justify-between items-center mb-4">
-            <h1 className="text-2xl font-bold"></h1>
-            <ConnectKitButton />
+            <div className="flex gap-4">
+              <button
+                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                  onClick={() => window.location.href = "/"}
+              >
+                HOME
+              </button>
+              <button
+                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                  onClick={() => window.location.href = "/weather"}
+              >
+                WEATHER
+              </button>
+              <button
+                  className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                  onClick={() => window.location.href = "/mint"}
+              >
+                MINT
+              </button>
+            </div>
+            <ConnectKitButton/>
           </div>
+
           {children}
         </div>
       </Web3Provider>
