@@ -25,7 +25,7 @@ type WeatherType = "rain" | "sun" | "cloudy";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [currentWeather, setCurrentWeather] = useState<WeatherType>("sun");
-  const [autoChange, setAutoChange] = useState(true); // Para controlar cambios automáticos
+  const [autoChange] = useState(true); // Para controlar cambios automáticos
 
   useEffect(() => {
     if (!autoChange) return; // No ejecuta el intervalo si autoChange es false
@@ -40,10 +40,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return () => clearInterval(interval);
   }, [autoChange]);
 
-  const handleWeatherChange = (weather: WeatherType) => {
-    setAutoChange(false); // Desactiva cambios automáticos
-    setCurrentWeather(weather);
-  };
 
   const renderBackground = () => {
     switch (currentWeather) {

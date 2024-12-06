@@ -17,7 +17,7 @@ export const getContract = async (): Promise<ethers.Contract> => {
     if (!window.ethereum) {
         throw new Error("MetaMask is not installed.");
     }
-    const provider = new ethers.BrowserProvider(window.ethereum as any);
+    const provider = new ethers.BrowserProvider(window.ethereum);
     const signer = await provider.getSigner();
     return new ethers.Contract(contractAddress, WeatherNFTAbi, signer);
 };
