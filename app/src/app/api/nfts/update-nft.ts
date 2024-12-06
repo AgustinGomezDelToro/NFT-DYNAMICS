@@ -7,7 +7,7 @@ dotenv.config();
 const provider = new ethers.JsonRpcProvider(process.env.RCP);
 const signer = new ethers.Wallet(process.env.PRIVATE_KEY!, provider);
 
-const contractAddress = "0xE62ae127015A59b02Fb609575D12d17Be3E57e5F";
+const contractAddress = "0x744a71168b4968Eaf642241F491Fb9cD7CDb80bA";
 const contractABI = [
     {
         "inputs": [

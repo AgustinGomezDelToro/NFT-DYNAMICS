@@ -5,4 +5,5 @@ export interface NFT {
     image: string;
     humidity: number;
     windSpeed: number;
+    temperature: number;
 }

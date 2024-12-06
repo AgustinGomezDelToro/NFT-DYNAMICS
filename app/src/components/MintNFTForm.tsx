@@ -29,6 +29,7 @@ export default function MintNFTForm() {
         image: "",
         humidity: 0,
         windSpeed: 0,
+        temperature: 0, // Añadido el campo de temperatura
     });
 
     const [error, setError] = useState<string | null>(null);
@@ -38,7 +39,9 @@ export default function MintNFTForm() {
         const { name, value } = e.target;
         setFormData({
             ...formData,
-            [name]: name === "humidity" || name === "windSpeed" ? parseInt(value) : value,
+            [name]: name === "humidity" || name === "windSpeed" || name === "temperature"
+                ? parseInt(value) || 0
+                : value,
         });
         console.log(`Updated form field: ${name}, Value: ${value}`);
         setError(null);
@@ -65,7 +68,8 @@ export default function MintNFTForm() {
                 formData.description,
                 formData.image,
                 formData.humidity,
-                formData.windSpeed
+                formData.windSpeed,
+                formData.temperature // Enviar la temperatura
             );
             alert("NFT minted successfully!");
             setFormData({
@@ -75,6 +79,7 @@ export default function MintNFTForm() {
                 image: "",
                 humidity: 0,
                 windSpeed: 0,
+                temperature: 0, // Reiniciar el valor de temperatura
             });
         } catch (error) {
             console.error("Error minting the NFT:", error);
@@ -97,15 +102,20 @@ export default function MintNFTForm() {
             const city = cityData[cityIndex];
             const randomHumidity = Math.floor(Math.random() * 100);
             const randomWindSpeed = Math.floor(Math.random() * 50);
+            const randomTemperature = Math.floor(Math.random() * 40); // Generar temperatura aleatoria
 
-            console.log(`Minting NFT for ${city.name} with random data. Humidity: ${randomHumidity}, Wind Speed: ${randomWindSpeed}`);
+            console.log(
+                `Minting NFT for ${city.name} with random data. Humidity: ${randomHumidity}, Wind Speed: ${randomWindSpeed}, Temperature: ${randomTemperature}`
+            );
+
             await mintWeatherNFT(
                 "0x351024A4EC50612C8D1CF70cd508F77f37Da53F8", // Dirección válida
                 city.name,
                 city.description,
                 city.image,
                 randomHumidity,
-                randomWindSpeed
+                randomWindSpeed,
+                randomTemperature // Incluir temperatura
             );
             alert(`NFT for ${city.name} minted successfully!`);
         } catch (error) {
@@ -127,17 +137,22 @@ export default function MintNFTForm() {
             for (let i = 0; i < cityData.length; i++) {
                 const randomHumidity = Math.floor(Math.random() * 100);
                 const randomWindSpeed = Math.floor(Math.random() * 50);
+                const randomTemperature = Math.floor(Math.random() * 40); // Generar temperatura aleatoria
 
                 const city = cityData[i];
 
-                console.log(`Updating NFT for ${city.name} with random data. Humidity: ${randomHumidity}, Wind Speed: ${randomWindSpeed}`);
+                console.log(
+                    `Updating NFT for ${city.name} with random data. Humidity: ${randomHumidity}, Wind Speed: ${randomWindSpeed}, Temperature: ${randomTemperature}`
+                );
+
                 await updateWeatherNFT(
                     i + 1, // Suponiendo que tokenId corresponde al índice + 1
                     city.name,
                     city.description,
                     city.image,
                     randomHumidity,
-                    randomWindSpeed
+                    randomWindSpeed,
+                    randomTemperature // Incluir temperatura en la actualización
                 );
 
                 console.log(`NFT for ${city.name} updated successfully.`);
@@ -219,7 +234,7 @@ export default function MintNFTForm() {
                     <input
                         type="number"
                         name="humidity"
-                        value={formData.humidity}
+                        value={formData.humidity || ""}
                         onChange={handleChange}
                         className="w-full border p-2"
                         required
@@ -230,7 +245,18 @@ export default function MintNFTForm() {
                     <input
                         type="number"
                         name="windSpeed"
-                        value={formData.windSpeed}
+                        value={formData.windSpeed || ""}
+                        onChange={handleChange}
+                        className="w-full border p-2"
+                        required
+                    />
+                </div>
+                <div>
+                    <label className="block font-medium">Temperature:</label>
+                    <input
+                        type="number"
+                        name="temperature"
+                        value={formData.temperature || ""}
                         onChange={handleChange}
                         className="w-full border p-2"
                         required

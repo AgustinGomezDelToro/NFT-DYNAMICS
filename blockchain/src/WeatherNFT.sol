@@ -8,11 +8,12 @@ contract WeatherNFT is ERC721URIStorage, Ownable {
     uint256 public tokenCounter;
 
     struct WeatherData {
-        string name;
-        string description;
-        string image;
-        uint256 humidity;
-        uint256 windSpeed;
+        string name;         // City name
+        string description;  // Weather description (e.g., sunny, cloudy, rainy)
+        string image;        // Image URL
+        uint256 humidity;    // Humidity percentage
+        uint256 windSpeed;   // Wind speed
+        uint256 temperature; // Temperature in Celsius
     }
 
     mapping(uint256 => WeatherData) public weatherData;
@@ -28,7 +29,8 @@ contract WeatherNFT is ERC721URIStorage, Ownable {
         string memory description,
         string memory image,
         uint256 humidity,
-        uint256 windSpeed
+        uint256 windSpeed,
+        uint256 temperature
     ) public onlyOwner {
         uint256 newTokenId = tokenCounter;
 
@@ -36,10 +38,10 @@ contract WeatherNFT is ERC721URIStorage, Ownable {
         _safeMint(to, newTokenId);
 
         // Store the weather metadata
-        weatherData[newTokenId] = WeatherData(name, description, image, humidity, windSpeed);
+        weatherData[newTokenId] = WeatherData(name, description, image, humidity, windSpeed, temperature);
 
         // Dynamically generate the token URI
-        string memory uri = generateTokenURI(name, description, image, humidity, windSpeed);
+        string memory uri = generateTokenURI(name, description, image, humidity, windSpeed, temperature);
         _setTokenURI(newTokenId, uri);
 
         tokenCounter++; // Increment the token counter
@@ -51,15 +53,16 @@ contract WeatherNFT is ERC721URIStorage, Ownable {
         string memory description,
         string memory image,
         uint256 humidity,
-        uint256 windSpeed
+        uint256 windSpeed,
+        uint256 temperature
     ) public {
         require(ownerOf(tokenId) != address(0), "Token does not exist");
 
         // Update the weather metadata
-        weatherData[tokenId] = WeatherData(name, description, image, humidity, windSpeed);
+        weatherData[tokenId] = WeatherData(name, description, image, humidity, windSpeed, temperature);
 
         // Regenerate the token URI
-        string memory uri = generateTokenURI(name, description, image, humidity, windSpeed);
+        string memory uri = generateTokenURI(name, description, image, humidity, windSpeed, temperature);
         _setTokenURI(tokenId, uri);
     }
 
@@ -71,12 +74,13 @@ contract WeatherNFT is ERC721URIStorage, Ownable {
         string memory,
         string memory,
         uint256,
+        uint256,
         uint256
     )
     {
         require(ownerOf(tokenId) != address(0), "Token does not exist");
         WeatherData memory data = weatherData[tokenId];
-        return (data.name, data.description, data.image, data.humidity, data.windSpeed);
+        return (data.name, data.description, data.image, data.humidity, data.windSpeed, data.temperature);
     }
 
     function generateTokenURI(
@@ -84,7 +88,8 @@ contract WeatherNFT is ERC721URIStorage, Ownable {
         string memory description,
         string memory image,
         uint256 humidity,
-        uint256 windSpeed
+        uint256 windSpeed,
+        uint256 temperature
     ) public pure returns (string memory) {
         return
             string(
@@ -92,8 +97,11 @@ contract WeatherNFT is ERC721URIStorage, Ownable {
                 '{"name":"', name,
                 '", "description":"', description,
                 '", "image":"', image,
-                '", "attributes":[{"trait_type":"Humidity","value":', uint2str(humidity),
-                '},{"trait_type":"Wind Speed","value":', uint2str(windSpeed), '}]}'
+                '", "attributes":[',
+                '{"trait_type":"Humidity","value":', uint2str(humidity), '},',
+                '{"trait_type":"Wind Speed","value":', uint2str(windSpeed), '},',
+                '{"trait_type":"Temperature","value":', uint2str(temperature), '}',
+                ']}'
             )
         );
     }

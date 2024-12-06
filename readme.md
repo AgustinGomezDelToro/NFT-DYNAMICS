@@ -3,10 +3,10 @@
 
 
 ## Deploy details
-#### address of Contract: https://testnet.snowtrace.io/address/0xE62ae127015A59b02Fb609575D12d17Be3E57e5F
-#### https://testnet.snowtrace.io/token/0xE62ae127015A59b02Fb609575D12d17Be3E57e5F?chainid=43113
-#### Block: 36997025
-#### Transac : https://testnet.snowtrace.io/tx/0x41b1681a56f59e7f69dfafdb40a9111e7ad3d9157d1d5560fa239fb5396dc9b4
+#### address of Contract: https://testnet.snowtrace.io/address/0x744a71168b4968Eaf642241F491Fb9cD7CDb80bA
+#### https://testnet.snowtrace.io/token/0x744a71168b4968Eaf642241F491Fb9cD7CDb80bA?chainid=43113
+#### Block: 37007890
+#### Transac : https://testnet.snowtrace.io/tx/0xe09788458a3b4178b326a0f7a5d34bdfbb181b97d668477f07395f78b32e7632
 
 ## App Overview
 The WeatherNFT app allows users to interact with dynamic NFTs representing weather data. Each NFT contains the following information:
@@ -16,6 +16,7 @@ The WeatherNFT app allows users to interact with dynamic NFTs representing weath
 - Image URL
 - Humidity
 - Wind Speed
+- Temperature
 
 ### The app consists of:
 

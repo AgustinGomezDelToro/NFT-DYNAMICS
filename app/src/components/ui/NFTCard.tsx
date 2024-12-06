@@ -23,32 +23,38 @@ export function NFTCard({ nft, onUpdate }: NFTCardProps) {
                 return;
             }
 
+            // Conectar a MetaMask
             await window.ethereum.request({ method: "eth_requestAccounts" });
             console.log("MetaMask account connected for update.");
 
             // Generar valores aleatorios para la actualización
             const randomHumidity = Math.floor(Math.random() * 100);
             const randomWindSpeed = Math.floor(Math.random() * 50);
+            const randomTemperature = Math.floor(Math.random() * 40);
 
-            // Enviar transacción para actualizar el NFT
             console.log(
-                `Updating NFT ${nft.name} (Token ID: ${nft.tokenId}) with new values: Humidity: ${randomHumidity}, Wind Speed: ${randomWindSpeed}`
+                `Updating NFT ${nft.name} (Token ID: ${nft.tokenId}) with new values: Humidity: ${randomHumidity}, Wind Speed: ${randomWindSpeed}, Temperature: ${randomTemperature}`
             );
 
+            // Enviar transacción para actualizar el NFT
             await updateWeatherNFT(
                 nft.tokenId,
                 nft.name,
                 nft.description,
                 nft.image,
                 randomHumidity,
-                randomWindSpeed
+                randomWindSpeed,
+                randomTemperature
             );
 
-            // Actualizar el estado del NFT en el componente padre
+            console.log("Transaction sent. Updating state dynamically...");
+
+            // Actualizar el estado del NFT dinámicamente
             onUpdate({
                 ...nft,
                 humidity: randomHumidity,
                 windSpeed: randomWindSpeed,
+                temperature: randomTemperature,
             });
 
             alert(`NFT ${nft.name} updated successfully!`);
@@ -74,6 +80,9 @@ export function NFTCard({ nft, onUpdate }: NFTCardProps) {
             </p>
             <p className="text-sm">
                 <strong>Wind Speed:</strong> {nft.windSpeed} km/h
+            </p>
+            <p className="text-sm">
+                <strong>Temperature:</strong> {nft.temperature} °C {nft.temperature > 20 ? "🔥" : "❄️"}
             </p>
             <button
                 className={`mt-4 px-4 py-2 rounded ${

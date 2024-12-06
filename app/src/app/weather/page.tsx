@@ -2,19 +2,25 @@
 
 import React, { useEffect, useState } from "react";
 import { NFTCard } from "@/components/ui/NFTCard";
-import { getMintedNFTs } from "@/lib/contract"; // Cambia por tu función para recuperar NFTs
-import { NFT } from "@/types/NFT"; // Asegúrate de tener definida la interfaz NFT
+import { getMintedNFTs } from "@/lib/contract";
+import { NFT } from "@/types/NFT";
 
 export default function WeatherPage() {
     const [nfts, setNfts] = useState<NFT[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
+    const handleUpdate = (updatedNFT: NFT) => {
+        setNfts((prevNfts) =>
+            prevNfts.map((nft) => (nft.tokenId === updatedNFT.tokenId ? updatedNFT : nft))
+        );
+    };
+
     useEffect(() => {
         const fetchNFTs = async () => {
             try {
-                const data = await getMintedNFTs(); // Cambia esta línea si necesitas ajustar tu API
-                setNfts(data.slice(0, 10)); // Limita la cantidad de NFTs a 3
+                const data = await getMintedNFTs();
+                setNfts(data.slice(0, 3));
             } catch (error) {
                 setError("Failed to fetch NFTs. Please try again later.");
                 console.error("Error fetching NFTs:", error);
@@ -39,7 +45,9 @@ export default function WeatherPage() {
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6 mt-10 justify-items-center">
                     {nfts.length > 0 ? (
-                        nfts.map((nft) => <NFTCard key={nft.tokenId} nft={nft} onUpdate={() => {}} />)
+                        nfts.map((nft) => (
+                            <NFTCard key={nft.tokenId} nft={nft} onUpdate={handleUpdate} />
+                        ))
                     ) : (
                         <p className="text-center col-span-full text-gray-500">No NFTs to display.</p>
                     )}
