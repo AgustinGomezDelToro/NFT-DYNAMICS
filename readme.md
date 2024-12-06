@@ -1,6 +1,9 @@
 
 # NFT-DYNAMICS
 
+## PROD
+### https://nft-dynamics-deploy.vercel.app/
+
 
 ## Deploy details
 #### address of Contract: https://testnet.snowtrace.io/address/0x744a71168b4968Eaf642241F491Fb9cD7CDb80bA
